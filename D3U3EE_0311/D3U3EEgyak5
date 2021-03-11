@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int main()
+{
+    int helyzet;
+    pid_t valtozo;
+    if((valtozo=fork())==-1)
+    perror("Hiba");
+
+    
+    else if((helyzet=execl("/bin/ls,","-la",NULL))<0)
+           perror("system() error");
+
+              if(WIFEXITED(helyzet))
+
+             {       
+             printf("Befejeződés, visszakapott érték= %d\n",WEXITSTATUS(helyzet));
+          }
+
+    if ((valtozo = fork())==-1)
+        perror("Hibaa");
+
+    else if((helyzet=system("körte"))<0)
+        perror("system()error");
+
+            if(WIFEXITED(helyzet))
+    {
+
+printf("Nem normális végződés, visszatérő érték=%d\n",WEXITSTATUS(helyzet));
+    }
+
+    
+    else{
+        waitpid(valtozo,0,0);
+
+    
+        printf("\n gyermek processz befejezte a futást!\n");
+
+    }
+
+
+    return 0;
+}
+
